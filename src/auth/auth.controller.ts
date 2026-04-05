@@ -9,6 +9,8 @@ import {
 import { AuthService } from './auth.service';
 import { LoginAuthDto, RegisterAuthDto } from './dto/create-auth.dto';
 import type { Response } from 'express';
+import { Public } from 'src/decorators/public.decorator';
+@Public()
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

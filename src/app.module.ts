@@ -9,6 +9,9 @@ import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ShippingModule } from './shipping/shipping.module';
 import { PrismaService } from 'prisma/prisma.service';
+import { RolesGuard } from './role/role.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { AccessTokenGuard } from './auth/auth.guard';
 @Module({
   imports: [
     AuthModule,
@@ -20,6 +23,17 @@ import { PrismaService } from 'prisma/prisma.service';
     ShippingModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [
+    AppService,
+    PrismaService,
+    {
+      provide: APP_GUARD,
+      useClass: AccessTokenGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

@@ -7,6 +7,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
+    console.log('DATABASE_URL:', process.env.DATABASE_URL);
     return this.appService.getHello();
   }
 }

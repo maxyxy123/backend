@@ -22,7 +22,7 @@ export class AuthService {
 
   async login(loginDto: LoginAuthDto, res: Response) {
     const existUser = await this.prisma.user.findUnique({
-      where: { email: loginDto.email.trim().toLowerCase() },
+      where: { email: loginDto.email },
     });
 
     if (!existUser) {
@@ -40,7 +40,7 @@ export class AuthService {
 
     const payload = {
       sub: existUser.id,
-      role: existUser.role,
+      roles: [existUser.role],
     };
 
     const accessToken = await this.jwtService.signAsync(payload, {
@@ -101,7 +101,7 @@ export class AuthService {
   async register(registerAuthDto: RegisterAuthDto) {
     //User ton tai hay k?
     const existUser = await this.prisma.user.findUnique({
-      where: { email: registerAuthDto.email },
+      where: { email: registerAuthDto.email ?? 'Sai roi' },
     });
 
     if (existUser) throw new ConflictException('User have already exist');
